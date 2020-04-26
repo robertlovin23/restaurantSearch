@@ -64,9 +64,7 @@ const App = () => {
 
     //Helper methods for rendering tables
     const renderTable = (currentRestaurants,currentFilters) => {
-        console.log(currentRestaurants,currentFilters)
-        if(!filteredList.length){
-            return currentRestaurants.map(rest => {
+        return (filteredList.length > 0 ? currentFilters.map(rest => {
                 return(
                   <tr rest={rest.id}>
                     <td data-label="Name">{rest.name}</td>
@@ -76,25 +74,20 @@ const App = () => {
                     <td data-label="Number">{rest.genre}</td>
                   </tr>
                 )
-            })
-        } else {
-               return currentFilters.map(rest => {
-                    return(
-                      <tr rest={rest.id}>
-                        <td data-label="Name">{rest.name}</td>
-                        <td data-label="City">{rest.city}</td>
-                        <td data-label="State">{rest.state}</td>
-                        <td data-label="Number">{rest.telephone}</td>
-                        <td data-label="Number">{rest.genre}</td>
-                      </tr>
-                    )
-                })
+            }) : <tr style={{alignContent:"center"}}>No Results</tr>)
 
-        }
-    }
+            // currentFilters.map(rest => {
+            //         return(
+            //           <tr rest={rest.id}>
+            //             <td data-label="Name">{rest.name}</td>
+            //             <td data-label="City">{rest.city}</td>
+            //             <td data-label="State">{rest.state}</td>
+            //             <td data-label="Number">{rest.telephone}</td>
+            //             <td data-label="Number">{rest.genre}</td>
+            //           </tr>
+            //         )
+            //     })
 
-    const restFilters = () => {
-        
     }
 
     //Mounts fetch data to the component, I use an array at the end of the argument so that it prevents and infinite loop
@@ -118,7 +111,7 @@ const App = () => {
             tableFilters.push(i)
     }
 
-    const renderPagination = (!tableFilters.length ? tablePage.map(number => {
+    const renderPagination = (tableFilters.length ? tableFilters.map(number => {
         if(number === currentRows){
             return(
             <li className="pageNumber"
@@ -144,33 +137,34 @@ const App = () => {
             
             )
         }
-    }) : tableFilters.map(number => {
-        if(number === currentRows){
-            return(
-            <li className="pageNumber"
-                style={{color:"red",display: 'inline-block', marginRight:"10px"}}
-                key={number}
-                id={number}
-                onClick={handlePageCount}
-            >
-                {number}
-            </li>
+    }) : tableFilters.length === 0)
+    // tableFilters.map(number => {
+    //     if(number === currentRows){
+    //         return(
+    //         <li className="pageNumber"
+    //             style={{color:"red",display: 'inline-block', marginRight:"10px"}}
+    //             key={number}
+    //             id={number}
+    //             onClick={handlePageCount}
+    //         >
+    //             {number}
+    //         </li>
             
-            )
-        } else {
-            return(
-            <li className="pageNumber"
-                style={{display: 'inline-block', marginRight:"10px"}}
-                key={number}
-                id={number}
-                onClick={handlePageCount}
-            >
-                {number}
-            </li>
+    //         )
+    //     } else {
+    //         return(
+    //         <li className="pageNumber"
+    //             style={{display: 'inline-block', marginRight:"10px"}}
+    //             key={number}
+    //             id={number}
+    //             onClick={handlePageCount}
+    //         >
+    //             {number}
+    //         </li>
             
-            )
-        }
-    }))
+    //         )
+    //     }
+    // }))
     //Checks is restaurants are empty and then maps the array of objects to a table
     return(
         <div className="ui container">
