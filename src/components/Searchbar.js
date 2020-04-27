@@ -28,11 +28,17 @@ const Searchbar = (props) => {
         )
     }
 
-    const resetFilters = () => {
+    const resetFilter = (event) => {
+        event.preventDefault();
         setQueryString('')
         setStateFilter('')
         setGenreFilter('')
+        props.resetFilter();            
+        onSubmitString(event);
+
     }
+
+    console.log(!restaurant.length)
 
     const genres = [];
 
@@ -45,7 +51,6 @@ const Searchbar = (props) => {
     const filteredSet = new Set(genres)
     const filteredArray = [...filteredSet]
 
-
     return(
         <form className="ui form segment">
             <div className="field">
@@ -54,7 +59,7 @@ const Searchbar = (props) => {
             </div>
             <div className="two fields">
                 <div className="field">
-                        <label>Filter By State</label>
+                        <label>Filter By</label>
                         <select className="ui search selection dropdown" name="state-search" onChange={handleStatesChange} value={stateFilter}>
                             <option value="">All</option>
                             <option value="AL">Alabama</option>
@@ -120,8 +125,8 @@ const Searchbar = (props) => {
                         </select>
                     </div>
                 </div>
-                <div className="ui button primary" type="submit" onClick={(e) => onSubmitString(e)}>Submit</div>
-                <div className="ui button clear" onClick={() => resetFilters}>Reset</div>
+                <button className="ui button primary" disabled={!restaurant.length} type="submit" style={{display:'inline-block'}} onClick={(event) => onSubmitString(event)}>Apply Filters</button>
+                <button className="ui button clear" style={{display:'inline-block'}}  onClick={(e) => resetFilter(e)}>Reset All Filters</button>
         </form>
     )
 }
