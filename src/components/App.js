@@ -42,7 +42,6 @@ const App = () => {
         const search = query;
         const stateDropdown = states;
         const genreDropdown = genre;
-
         //
         const filters = restaurant.filter(res => {
             if(
@@ -58,36 +57,31 @@ const App = () => {
                   return res;
             }
         })
-        getFilteredList(filters)
+
+        getRestaurant(filters)
         setCurrentRows(1)
     }
 
     //Helper methods for rendering tables
-    const renderTable = (currentRestaurants,currentFilters) => {
-        return (filteredList.length > 0 ? currentFilters.map(rest => {
-                return(
-                  <tr rest={rest.id}>
-                    <td data-label="Name">{rest.name}</td>
-                    <td data-label="City">{rest.city}</td>
-                    <td data-label="State">{rest.state}</td>
-                    <td data-label="Number">{rest.telephone}</td>
-                    <td data-label="Number">{rest.genre}</td>
-                  </tr>
-                )
-            }) : <tr style={{alignContent:"center"}}>No Results</tr>)
+    const renderTable = (currentRestaurants) => {
+        let restaurantArr = []
+        restaurantArr = restaurant
+        console.log(restaurant,restaurantArr)
+        return (restaurant.length > 0 ? currentRestaurants.map(rest => {
+            return(
+              <tr rest={rest.id}>
+                <td data-label="Name">{rest.name}</td>
+                <td data-label="City">{rest.city}</td>
+                <td data-label="State">{rest.state}</td>
+                <td data-label="Number">{rest.telephone}</td>
+                <td data-label="Number">{rest.genre}</td>
+              </tr>
+            )
+        }) : <tr style={{alignContent:"center"}}>No results found for this State.</tr>)
+    }
 
-            // currentFilters.map(rest => {
-            //         return(
-            //           <tr rest={rest.id}>
-            //             <td data-label="Name">{rest.name}</td>
-            //             <td data-label="City">{rest.city}</td>
-            //             <td data-label="State">{rest.state}</td>
-            //             <td data-label="Number">{rest.telephone}</td>
-            //             <td data-label="Number">{rest.genre}</td>
-            //           </tr>
-            //         )
-            //     })
-
+    const resetFilter = () => {
+        fetchData();
     }
 
     //Mounts fetch data to the component, I use an array at the end of the argument so that it prevents and infinite loop
@@ -98,7 +92,7 @@ const App = () => {
     const indexOfLastItem = currentRows * itemsInTable;
     const indexOfFirstItem = indexOfLastItem - itemsInTable;
 
-    const tableFilters = [];
+    // const tableFilters = [];
     const tablePage = [];
 
     const currentRestaurants = restaurant.slice(indexOfFirstItem, indexOfLastItem);
@@ -106,12 +100,14 @@ const App = () => {
             tablePage.push(i)
     }
 
-    const currentFilters = filteredList.slice(indexOfFirstItem, indexOfLastItem);
-        for(let i = 1; i <= Math.ceil(filteredList.length/ itemsInTable); i++){
-            tableFilters.push(i)
-    }
+    console.log(restaurant,currentRestaurants)
 
-    const renderPagination = (tableFilters.length ? tableFilters.map(number => {
+    // const currentFilters = filteredList.slice(indexOfFirstItem, indexOfLastItem);
+    //     for(let i = 1; i <= Math.ceil(filteredList.length/ itemsInTable); i++){
+    //         tablePage.push(i)
+    // }
+
+    const renderPagination = (tablePage.length ? tablePage.map(number => {
         if(number === currentRows){
             return(
             <li className="pageNumber"
@@ -137,40 +133,19 @@ const App = () => {
             
             )
         }
-    }) : tableFilters.length === 0)
-    // tableFilters.map(number => {
-    //     if(number === currentRows){
-    //         return(
-    //         <li className="pageNumber"
-    //             style={{color:"red",display: 'inline-block', marginRight:"10px"}}
-    //             key={number}
-    //             id={number}
-    //             onClick={handlePageCount}
-    //         >
-    //             {number}
-    //         </li>
-            
-    //         )
-    //     } else {
-    //         return(
-    //         <li className="pageNumber"
-    //             style={{display: 'inline-block', marginRight:"10px"}}
-    //             key={number}
-    //             id={number}
-    //             onClick={handlePageCount}
-    //         >
-    //             {number}
-    //         </li>
-            
-    //         )
-    //     }
-    // }))
+    }) : tablePage.length === 0)
+
     //Checks is restaurants are empty and then maps the array of objects to a table
     return(
         <div className="ui container">
-            <SearchBar onSubmitString={filterRestaurants} restaurant={restaurant}/>
+            <SearchBar onSubmitString={filterRestaurants} resetFilter={resetFilter} restaurant={restaurant}/>
             <div>
-                <h4>{renderPagination}</h4>
+                <div>   
+                    <h4 style={{ display:"inline-block"}}>{renderPagination}</h4>
+                    <div style={{float:"right",display:"inline-block"}}>
+                        {restaurant.length} Results 
+                    </div>
+                </div>
                 <table class="ui celled table">
                     <thead>
                         <tr>
@@ -182,7 +157,7 @@ const App = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {renderTable(currentRestaurants,currentFilters)}
+                        {renderTable(currentRestaurants)}
                     </tbody>
                 </table>
                 <h4>{renderPagination}</h4>
@@ -190,7 +165,5 @@ const App = () => {
         </div>
     )
 }
-
-
 
 export default App;
