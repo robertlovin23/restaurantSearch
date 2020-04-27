@@ -77,7 +77,7 @@ const App = () => {
                 <td data-label="Number">{rest.genre}</td>
               </tr>
             )
-        }) : <tr style={{alignContent:"center"}}>No results found for this State.</tr>)
+        }) : <tr style={{alignContent:"center"}}>No results found.</tr>)
     }
 
     const resetFilter = () => {
@@ -135,6 +135,12 @@ const App = () => {
         }
     }) : tablePage.length === 0)
 
+    const renderChangeArrows = () => {
+        return(
+            {renderPagination}
+        )
+    }
+
     //Checks is restaurants are empty and then maps the array of objects to a table
     return(
         <div className="ui container">
@@ -143,7 +149,10 @@ const App = () => {
                 <div>   
                     <h4 style={{ display:"inline-block"}}>{renderPagination}</h4>
                     <div style={{float:"right",display:"inline-block"}}>
-                        {restaurant.length} Results 
+                        {restaurant.length > 1 || restaurant.length === 0 ? 
+                            <div>{restaurant.length} Results</div> : 
+                            <div>{restaurant.length} Result</div>
+                        } 
                     </div>
                 </div>
                 <table class="ui celled table">

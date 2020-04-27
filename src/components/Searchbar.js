@@ -55,12 +55,12 @@ const Searchbar = (props) => {
         <form className="ui form segment">
             <div className="field">
                 <label>Search for Restaurants by Name/City/Genre</label>
-                <input onChange={handleQueryChange} value={queryString} name="text-search"/>    
+                <input onChange={handleQueryChange} disabled={restaurant.length <= 1} value={queryString} name="text-search"/>    
             </div>
             <div className="two fields">
                 <div className="field">
                         <label>Filter By</label>
-                        <select className="ui search selection dropdown" name="state-search" onChange={handleStatesChange} value={stateFilter}>
+                        <select className="ui search selection dropdown" disabled={restaurant.length <= 1} name="state-search" onChange={handleStatesChange} value={stateFilter}>
                             <option value="">All</option>
                             <option value="AL">Alabama</option>
                             <option value="AK">Alaska</option>
@@ -117,7 +117,7 @@ const Searchbar = (props) => {
                     </div>
                     <div className="field">
                         <label>Filter By Genre</label>
-                        <select className="ui search selection dropdown" name="genre-search" onChange={handleGenresChange} value={genreFilter}>
+                        <select className="ui search selection dropdown" disabled={restaurant.length <= 1} name="genre-search" onChange={handleGenresChange} value={genreFilter}>
                             <option value="">All</option>
                             {filteredArray.map(genres => {
                             return <option key={genres} value={genres}>{genres}</option>
@@ -125,7 +125,7 @@ const Searchbar = (props) => {
                         </select>
                     </div>
                 </div>
-                <button className="ui button primary" disabled={!restaurant.length} type="submit" style={{display:'inline-block'}} onClick={(event) => onSubmitString(event)}>Apply Filters</button>
+                <button className="ui button primary" disabled={restaurant.length <= 1} type="submit" style={{display:'inline-block'}} onClick={(event) => onSubmitString(event)}>Apply Filters</button>
                 <button className="ui button clear" style={{display:'inline-block'}}  onClick={(e) => resetFilter(e)}>Reset All Filters</button>
         </form>
     )
