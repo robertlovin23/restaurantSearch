@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import keys from '../keys/keys'
 import {GoogleApiWrapper, Map, InfoWindow, Marker} from 'google-maps-react'
+import apiKeys from '../keys/keys';
 
 const RestaurantDetails = (props) => {
    const { restaurant,closeModal } = props 
@@ -56,5 +57,5 @@ const RestaurantDetails = (props) => {
 }
 
 export default GoogleApiWrapper({
-        apiKey: keys.googleApiKey
+        apiKey: apiKeys.googleApiKey
 })(RestaurantDetails)
