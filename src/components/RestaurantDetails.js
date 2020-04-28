@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import keys from '../keys/keys'
 import {GoogleApiWrapper, Map, InfoWindow, Marker} from 'google-maps-react'
 
 const RestaurantDetails = (props) => {
@@ -12,9 +13,9 @@ const RestaurantDetails = (props) => {
    const coords = { lat: lat, lng: lng}
 
    return ReactDOM.createPortal(
-        <div onClick={(e) => closeModal(e)} className="ui dimmer modals visible active" style={{position:'fixed',padding:'0', margin:'0',top:'0',left:'0',width:"100%",height:"100%"}}>
+        <div onClick={() => closeModal()} className="ui dimmer modals visible active" style={{position:'fixed',padding:'0', margin:'0',top:'0',left:'0',width:"100%",height:"100%"}}>
             <div onClick={(e) => e.stopPropagation()}className="ui standard modal visible active" style={{paddingBottom:"200px"}}>
-                <i class="close icon" onClick={(e) => closeModal(e)}></i>
+                <i class="close icon" onClick={() => closeModal()}></i>
                 <div className="header">
                     {restaurant.name}
                 </div>
@@ -55,5 +56,5 @@ const RestaurantDetails = (props) => {
 }
 
 export default GoogleApiWrapper({
-        apiKey: 'AIzaSyB9YiRdL-s4y4uz2gK0aPfDx34BwRyTKpQ'
+        apiKey: keys.googleApiKey
 })(RestaurantDetails)
