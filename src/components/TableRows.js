@@ -26,8 +26,8 @@ const TableRows = (props) => {
         )
     }
     const response = restaurant.length > 0 ? currentRestaurants.map(rest => {
+        
         return(
-
             <tr rest={rest.id} onClick={() => {selectRestaurant(rest)}}>
                 <td data-label="Name" onClick={openModal}>{rest.name}</td>
                 <td data-label="City">{rest.city}</td>
