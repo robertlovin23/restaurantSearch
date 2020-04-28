@@ -1,14 +1,9 @@
 import React, {useState,useEffect} from 'react'
 import SearchBar from './Searchbar'
 import TableRows from '../components/TableRows'
-import FetchRestaurants from '../api/fetchRestaurants'
-// import FetchRestaurants from '../../src/api/fetchRestaurants'
 
 const App = () => {
-    //Fetches Custom hook from FetchRestaurants hook
-    // const restaurant = FetchRestaurants(restaurant)
-    // const selectedRestaurant = FetchRestaurants(selectedRestaurant)
-    // const restaurants = FetchRestaurants();
+
     const [currentRows,setCurrentRows] = useState(1)
     const [itemsInTable] = useState(10)
 
@@ -99,14 +94,6 @@ const App = () => {
         for(let i = 1; i <= Math.ceil(restaurant.length/ itemsInTable); i++){
             tablePage.push(i)
     }
-
-    console.log(restaurant,currentRestaurants)
-
-    // const currentFilters = filteredList.slice(indexOfFirstItem, indexOfLastItem);
-    //     for(let i = 1; i <= Math.ceil(filteredList.length/ itemsInTable); i++){
-    //         tablePage.push(i)
-    // }
-
 
     //Renders pagination and sets the className depending on if the currently selected page number matches the TablePages array
     const renderPagination = (tablePage.length ? tablePage.map(number => {

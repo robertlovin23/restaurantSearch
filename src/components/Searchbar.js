@@ -1,69 +1,61 @@
 import React, { useState } from 'react'
 
 const Searchbar = (props) => {
-    const [queryString,setQueryString] = useState('')
-    const [stateFilter, setStateFilter] = useState('')
-    const [genreFilter, setGenreFilter] = useState('')
-    const [attireFilter, setAttireFilter] = useState('')
+    const [values,setValues] = useState({query: '', genre:'', state:'',attire:''})
+
     const { restaurant } = props
 
-
-    const handleQueryChange = (event) => {
-        setQueryString(event.target.value)
-    }
-
-    const handleStatesChange = (event) => {
-        setStateFilter(event.target.value)
-    }
-
-    const handleGenresChange = (event) => {
-        setGenreFilter(event.target.value)
-    }
-
-    const handleAttireChange = (event) => {
-        setAttireFilter(event.target.value)
+    const handleValueChange = (event) => {
+        const {name,value} = event.target
+        setValues({...values, [name]: value})
     }
 
     const onSubmitString = (event) => {
         event.preventDefault();
         props.onSubmitString(
-            queryString,
-            stateFilter,
-            genreFilter,
-            attireFilter
+            values.query,
+            values.state,
+            values.genre,
+            values.attire
         )
     }
 
     const resetFilter = (event) => {
         event.preventDefault();
-        setQueryString('')
-        setStateFilter('')
-        setGenreFilter('')
-        setAttireFilter('')
+        setValues({query: '', genre:'', state:'',attire:''})
         props.resetFilter();            
         onSubmitString(event);
 
     }
 
-    console.log(!restaurant.length)
+    const capitalizeAttire = (str) => {
+        var splitAttireStr = str.toLowerCase().split(' ')
+        for(var i = 0; i < splitAttireStr.length; i++){
+            splitAttireStr[i]  = splitAttireStr[i].charAt(0).toUpperCase() + splitAttireStr[i].substring(1);
+        }
+        return splitAttireStr.join(' ');
+   }
+
 
     const genres = [];
     const dressCode = [];
 
-    restaurant.forEach(name => {
-        name.genre.split(',').filter(a => {
+    restaurant.forEach(restGenre => {
+        restGenre.genre.split(',').filter(a => {
             return genres.push(a)
         })
     });
 
-    restaurant.forEach(attire => {
-        attire.attire.split(',').filter(a => {
+    restaurant.forEach(restAttire => {
+        const capString = capitalizeAttire(restAttire.attire)
+        capString.split(',').filter(a => {
             return dressCode.push(a)
         })
     });
 
     const filteredGenre = new Set(genres)
     const filteredGenreArray = [...filteredGenre]
+
     const filteredAttire = new Set(dressCode)
     const filteredAttireArray = [...filteredAttire]
 
@@ -71,12 +63,17 @@ const Searchbar = (props) => {
         <form className="ui form segment">
             <div className="field">
                 <label>Search for Restaurants by Name/City/Genre</label>
-                <input onChange={handleQueryChange} disabled={restaurant.length <= 1} value={queryString} name="text-search"/>    
+                <input onChange={handleValueChange} disabled={restaurant.length <= 1} value={values.query} name="query"/>    
             </div>
             <div className="two fields">
                 <div className="field">
                         <label>Filter By</label>
-                        <select className="ui search selection dropdown" disabled={restaurant.length <= 1} name="state-search" onChange={handleStatesChange} value={stateFilter}>
+                        <select className="ui search selection dropdown" 
+                            disabled={restaurant.length <= 1} 
+                            name="state" 
+                            onChange={handleValueChange} 
+                            value={values.state}
+                        >
                             <option value="">All</option>
                             <option value="AL">Alabama</option>
                             <option value="AK">Alaska</option>
@@ -133,7 +130,12 @@ const Searchbar = (props) => {
                     </div>
                     <div className="field">
                         <label>Filter By Genre</label>
-                        <select className="ui search selection dropdown" disabled={restaurant.length <= 1} name="genre-search" onChange={handleGenresChange} value={genreFilter}>
+                        <select className="ui search selection dropdown" 
+                            disabled={restaurant.length <= 1} 
+                            name="genre" 
+                            onChange={handleValueChange} 
+                            value={values.genre}
+                        >
                             <option value="">All</option>
                                 {filteredGenreArray.map(genres => {
                                     return <option key={genres} value={genres}>{genres}</option>
@@ -142,7 +144,12 @@ const Searchbar = (props) => {
                     </div>
                     <div className="field">
                         <label>Filter By Attire</label>
-                        <select className="ui search selection dropdown" disabled={restaurant.length <= 1} name="genre-search" onChange={handleAttireChange} value={attireFilter}>
+                        <select className="ui search selection dropdown" 
+                            disabled={restaurant.length <= 1} 
+                            name="attire" 
+                            onChange={handleValueChange} 
+                            value={values.attire}
+                        >
                             <option value="">All</option>
                                 {filteredAttireArray.map(attire => {
                                     return <option key={attire} value={attire}>{attire}</option>
