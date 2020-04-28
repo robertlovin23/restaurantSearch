@@ -4,6 +4,7 @@ const Searchbar = (props) => {
     const [queryString,setQueryString] = useState('')
     const [stateFilter, setStateFilter] = useState('')
     const [genreFilter, setGenreFilter] = useState('')
+    const [attireFilter, setAttireFilter] = useState('')
     const { restaurant } = props
 
 
@@ -19,12 +20,17 @@ const Searchbar = (props) => {
         setGenreFilter(event.target.value)
     }
 
+    const handleAttireChange = (event) => {
+        setAttireFilter(event.target.value)
+    }
+
     const onSubmitString = (event) => {
         event.preventDefault();
         props.onSubmitString(
             queryString,
             stateFilter,
-            genreFilter
+            genreFilter,
+            attireFilter
         )
     }
 
@@ -33,6 +39,7 @@ const Searchbar = (props) => {
         setQueryString('')
         setStateFilter('')
         setGenreFilter('')
+        setAttireFilter('')
         props.resetFilter();            
         onSubmitString(event);
 
@@ -41,6 +48,7 @@ const Searchbar = (props) => {
     console.log(!restaurant.length)
 
     const genres = [];
+    const dressCode = [];
 
     restaurant.forEach(name => {
         name.genre.split(',').filter(a => {
@@ -48,8 +56,16 @@ const Searchbar = (props) => {
         })
     });
 
-    const filteredSet = new Set(genres)
-    const filteredArray = [...filteredSet]
+    restaurant.forEach(attire => {
+        attire.attire.split(',').filter(a => {
+            return dressCode.push(a)
+        })
+    });
+
+    const filteredGenre = new Set(genres)
+    const filteredGenreArray = [...filteredGenre]
+    const filteredAttire = new Set(dressCode)
+    const filteredAttireArray = [...filteredAttire]
 
     return(
         <form className="ui form segment">
@@ -119,9 +135,18 @@ const Searchbar = (props) => {
                         <label>Filter By Genre</label>
                         <select className="ui search selection dropdown" disabled={restaurant.length <= 1} name="genre-search" onChange={handleGenresChange} value={genreFilter}>
                             <option value="">All</option>
-                            {filteredArray.map(genres => {
-                            return <option key={genres} value={genres}>{genres}</option>
-                            })}
+                                {filteredGenreArray.map(genres => {
+                                    return <option key={genres} value={genres}>{genres}</option>
+                                })}
+                        </select>
+                    </div>
+                    <div className="field">
+                        <label>Filter By Attire</label>
+                        <select className="ui search selection dropdown" disabled={restaurant.length <= 1} name="genre-search" onChange={handleAttireChange} value={attireFilter}>
+                            <option value="">All</option>
+                                {filteredAttireArray.map(attire => {
+                                    return <option key={attire} value={attire}>{attire}</option>
+                                })}
                         </select>
                     </div>
                 </div>
