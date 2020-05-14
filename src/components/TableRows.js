@@ -15,7 +15,7 @@ const TableRows = ({currentRestaurants,selectRestaurant,selectedRestaurant }) =>
 
     const renderModal = () => {
         if(modalOpen){
-           return <RestaurantDetails restaurant={selectedRestaurant} closeModal={closeModal}/>
+           return <RestaurantDetails restaurant={selectRestaurant} closeModal={closeModal}/>
         }
     }
 
